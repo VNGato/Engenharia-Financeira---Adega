@@ -119,7 +119,7 @@ def clear_data():
     DashboardState.query.filter_by(user_id=current_user.id).update({
         "fat": 0, "socios": 0, "base_esc": 0, "base_cax": 0, "base_rep": 0,
         "q_esc": 0, "q_cax": 0, "q_rep": 0
-    })
+    }, synchronize_session='fetch')
     db.session.commit()
     print("DEBUG: Limpeza concluida com sucesso")
     return jsonify({"status": "success"})

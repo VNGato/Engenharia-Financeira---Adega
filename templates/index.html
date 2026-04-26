@@ -922,6 +922,8 @@
         }
 
         async function saveToServer() {
+            if (isCleaning) return; // Aborta qualquer salvamento se estiver limpando
+            
             const payload = {
                 fat: parseCurrency(document.getElementById('fat_input').value),
                 socios: parseInt(document.getElementById('socios_input').value) || 0,
@@ -956,8 +958,10 @@
                     document.getElementById('socios_input').value = 0;
                     q = { esc: 0, cax: 0, rep: 0 };
                     
-                    // Recarrega com cache-buster (força o navegador a buscar do zero)
-                    window.location.href = window.location.pathname + "?reset=" + new Date().getTime();
+                    // Pequeno delay para garantir que o banco terminou de processar
+                    setTimeout(() => {
+                        window.location.href = window.location.pathname + "?reset=" + new Date().getTime();
+                    }, 500);
                 } catch (e) {
                     isCleaning = false;
                     console.error("Erro ao limpar banco:", e);
