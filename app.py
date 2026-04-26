@@ -114,9 +114,14 @@ def save_data():
 @app.route('/api/clear_data', methods=['POST'])
 @login_required
 def clear_data():
-    # Deleta o registro atual. O sistema recriará um zerado no próximo 'get_data'
-    DashboardState.query.filter_by(user_id=current_user.id).delete()
+    print(f"DEBUG: Iniciando limpeza para usuario {current_user.id}")
+    # Update direto para garantir que o registro seja zerado imediatamente
+    DashboardState.query.filter_by(user_id=current_user.id).update({
+        "fat": 0, "socios": 0, "base_esc": 0, "base_cax": 0, "base_rep": 0,
+        "q_esc": 0, "q_cax": 0, "q_rep": 0
+    })
     db.session.commit()
+    print("DEBUG: Limpeza concluida com sucesso")
     return jsonify({"status": "success"})
 
 if __name__ == '__main__':

@@ -803,7 +803,8 @@
 
         async function loadInitialData() {
             try {
-                const res = await fetch('/api/get_data');
+                // Adiciona buster de cache para garantir dados frescos do servidor
+                const res = await fetch('/api/get_data?t=' + new Date().getTime());
                 if (res.status === 401) { window.location.href = '/login'; return; }
                 const data = await res.json();
 
@@ -913,7 +914,7 @@
                 document.getElementById('analise').innerText = "Aguardando faturamento...";
             }
 
-            if (shouldSave) {
+            if (shouldSave && !isCleaning) {
                 clearTimeout(saveTimeout);
                 showSavingStatus();
                 saveTimeout = setTimeout(saveToServer, 1000);
@@ -942,10 +943,12 @@
 
         async function clearDatabase() {
             if (confirm("Deseja realmente excluir os dados já cadastrados no banco?")) {
-                clearTimeout(saveTimeout); // Para qualquer salvamento pendente
+                isCleaning = true; // Trava todos os salvamentos
+                clearTimeout(saveTimeout);
                 try {
                     await fetch('/api/clear_data', { method: 'POST' });
-                    // Limpa logo na tela para feedback instantâneo
+                    
+                    // Limpa logo na tela
                     document.getElementById('fat_input').value = "R$ 0,00";
                     document.getElementById('base_esc').value = "R$ 0,00";
                     document.getElementById('base_cax').value = "R$ 0,00";
@@ -953,8 +956,12 @@
                     document.getElementById('socios_input').value = 0;
                     q = { esc: 0, cax: 0, rep: 0 };
                     
-                    location.reload(); 
-                } catch (e) { console.error("Erro ao limpar banco:", e); }
+                    // Recarrega com cache-buster (força o navegador a buscar do zero)
+                    window.location.href = window.location.pathname + "?reset=" + new Date().getTime();
+                } catch (e) {
+                    isCleaning = false;
+                    console.error("Erro ao limpar banco:", e);
+                }
             }
         }
 
