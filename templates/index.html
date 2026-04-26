@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adega Business Intelligence - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: rgba(20, 20, 20, 0.7);
+            --glass: rgba(255, 255, 255, 0.05);
+            --accent: #FFD700;
+            --accent-glow: rgba(255, 215, 0, 0.3);
+            --success: #00FF88;
+            --info: #00CCFF;
+            --error: #FF4D4D;
+            --text: #FFFFFF;
+            --text-dim: #999999;
+            --border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('/static/bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* --- Header --- */
+        .header-main {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-main .title-group { text-align: left; }
+        .header-main h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
+            margin-bottom: 10px;
+        }
+
+        .header-main p {
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .nav-actions { display: flex; gap: 15px; }
+        .btn-nav {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .btn-nav:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+        .btn-nav.danger:hover { background: rgba(255,77,77,0.1); border-color: var(--error); color: var(--error); }
+
+        /* --- Status Indicator --- */
+        .save-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--surface);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--border);
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+        }
+        .save-status.active { opacity: 1; }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+        .dot.syncing { background: var(--info); animation: pulse 1s infinite; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        /* --- Cards --- */
+        .top-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .glass-card {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 215, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .grid-pessoal {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .category-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .salary-input-row {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px dashed var(--border);
+        }
+
+        .salary-input-row label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .salary-input-row input {
+            background: transparent;
+            border: none;
+            color: var(--success);
+            font-size: 1.4rem;
+            font-weight: 700;
+            width: 100%;
+            outline: none;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        
+        .spec-row strong { color: var(--text); }
+
+        .counter-tool {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .counter-tool button {
+            background: var(--glass);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .counter-tool button:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .counter-tool span {
+            font-size: 2.2rem;
+            font-weight: 700;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .total-badge {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card-result {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-result::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+        }
+
+        .card-result.blue::after { background: var(--info); }
+        .card-result.green::after { background: var(--success); }
+
+        .card-result .type-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .card-result .main-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .card-result .sub-detail {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .card-result .percent-tag {
+            background: rgba(255,255,255,0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: var(--info);
+            font-weight: 600;
+        }
+
+        .analysis-engine {
+            margin-top: 40px;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            border-left: 2px solid var(--accent);
+        }
+
+        .analysis-engine strong { color: var(--accent); }
+        .analysis-engine em { font-style: normal; color: var(--info); font-size: 0.8rem; opacity: 0.8; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in { animation: fadeIn 0.6s ease forwards; }
+
+        /* --- Print Styling --- */
+        @media print {
+            body { background: white !important; color: black !important; padding: 0 !important; }
+            .container { max-width: 100% !important; margin: 0 !important; padding: 20px !important; }
+            .nav-actions, .counter-tool, .save-status, .btn-nav { display: none !important; }
+            .glass-card { background: white !important; border: 1px solid #ccc !important; box-shadow: none !important; backdrop-filter: none !important; color: black !important; page-break-inside: avoid; }
+            .input-group input, .salary-input-row input { color: black !important; border: 1px solid #ddd !important; background: #f9f9f9 !important; font-size: 1.2rem !important; }
+            h1, h3, label { color: #333 !important; text-shadow: none !important; }
+            strong, .main-value, .total-badge strong { color: black !important; }
+            .analysis-engine { border-left-color: #333 !important; background: #f1f1f1 !important; color: #111 !important; }
+            .card-result::after { background: #333 !important; }
+        }
+
+        @media (max-width: 768px) {
+            .header-main { flex-direction: column; text-align: center; gap: 20px; }
+            .header-main .title-group { text-align: center; }
+            .header-main h1 { font-size: 1.6rem; }
+            body { padding: 20px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="save_indicator" class="save-status">
+    <div id="sync_dot" class="dot"></div>
+    <span id="sync_text">Dados Sincronizados</span>
+</div>
+
+<div class="container">
+    <header class="header-main fade-in">
+        <div class="title-group">
+            <h1>Adega Intelligence</h1>
+            <p>Fiscal Engineering & Financial Control</p>
+        </div>
+        <div class="nav-actions">
+            <button class="btn-nav" onclick="window.print()">Exportar Relatório</button>
+            <a href="/logout" class="btn-nav danger">Sair do Sistema</a>
+        </div>
+    </header>
+
+    <div class="top-bar fade-in" style="animation-delay: 0.1s;">
+        <div class="glass-card input-group">
+            <label>Faturamento Bruto Mensal</label>
+            <input type="number" id="fat_input" value="0" oninput="run()">
+        </div>
+        <div class="glass-card input-group">
+            <label>Nº de Sócios (0 = Individual)</label>
+            <input type="number" id="socios_input" value="0" min="0" oninput="run()">
+        </div>
+    </div>
+
+    <div class="grid-pessoal">
+        <!-- Escritório -->
+        <div class="glass-card category-card fade-in" style="animation-delay: 0.2s;">
+            <h3>Gestão & Estratégico</h3>
+            <div class="salary-input-row">
+                <label>Pro-labore Médio (R$)</label>
+                <input type="number" id="base_esc" value="0" oninput="run()">
+            </div>
+            <div class="spec-row">
+                <span>Custo Real (+40% encargos)</span>
+                <strong id="real_esc">R$ 0,00</strong>
+            </div>
+            <div class="counter-tool">
+                <button onclick="updateQtd('esc', -1)">−</button>
+                <span id="qtd_esc">0</span>
+                <button onclick="updateQtd('esc', 1)">+</button>
+            </div>
+            <div class="total-badge">
+                <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
+                <strong id="sub_esc" style="color: var(--info);">R$ 0,00</strong>
+            </div>
+        </div>
+
+        <!-- Caixa -->
+        <div class="glass-card category-card fade-in" style="animation-delay: 0.3s;">
+            <h3>Operacional / Caixa</h3>
+            <div class="salary-input-row">
+                <label>Salário Base (R$)</label>
+                <input type="number" id="base_cax" value="0" oninput="run()">
+            </div>
+            <div class="spec-row">
+                <span>Custo Real (+40% encargos)</span>
+                <strong id="real_cax">R$ 0,00</strong>
+            </div>
+            <div class="counter-tool">
+                <button onclick="updateQtd('cax', -1)">−</button>
+                <span id="qtd_cax">0</span>
+                <button onclick="updateQtd('cax', 1)">+</button>
+            </div>
+            <div class="total-badge">
+                <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
+                <strong id="sub_cax" style="color: var(--info);">R$ 0,00</strong>
+            </div>
+        </div>
+
+        <!-- Atendente -->
+        <div class="glass-card category-card fade-in" style="animation-delay: 0.4s;">
+            <h3>Atendimento / Estoque</h3>
+            <div class="salary-input-row">
+                <label>Salário Base (R$)</label>
+                <input type="number" id="base_rep" value="0" oninput="run()">
+            </div>
+            <div class="spec-row">
+                <span>Custo Real (+40% encargos)</span>
+                <strong id="real_rep">R$ 0,00</strong>
+            </div>
+            <div class="counter-tool">
+                <button onclick="updateQtd('rep', -1)">−</button>
+                <span id="qtd_rep">0</span>
+                <button onclick="updateQtd('rep', 1)">+</button>
+            </div>
+            <div class="total-badge">
+                <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
+                <strong id="sub_rep" style="color: var(--info);">R$ 0,00</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="summary-grid">
+        <div class="glass-card card-result blue fade-in" style="animation-delay: 0.5s;">
+            <div class="type-label">Folha de Pagamento Total</div>
+            <div class="main-value" id="res_folha" style="color: var(--info);">R$ 0,00</div>
+            <div class="sub-detail">
+                Comprometimento: <span class="percent-tag" id="per_folha">0%</span> do faturamento.
+            </div>
+        </div>
+
+        <div class="glass-card card-result green fade-in" style="animation-delay: 0.6s;">
+            <div class="type-label" id="label_lucro">Rendimento Proprietário</div>
+            <div class="main-value" id="res_socio" style="color: var(--success);">R$ 0,00</div>
+            <div class="sub-detail" id="detalhe_lucro">Baseado na margem operacional de 25%.</div>
+        </div>
+    </div>
+
+    <div class="glass-card analysis-engine fade-in" id="analise" style="animation-delay: 0.7s;">
+        Sincronizando motores de cálculo...
+    </div>
+</div>
+
+<script>
+    let q = { esc: 0, cax: 0, rep: 0 };
+    let saveTimeout;
+    const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    function updateQtd(t, d) {
+        q[t] += d;
+        if (q[t] < 0) q[t] = 0;
+        document.getElementById(`qtd_${t}`).innerText = q[t];
+        run();
+    }
+
+    async function loadInitialData() {
+        try {
+            const res = await fetch('/api/get_data');
+            if (res.status === 401) { window.location.href = '/login'; return; }
+            const data = await res.json();
+            
+            document.getElementById('fat_input').value = data.fat;
+            document.getElementById('socios_input').value = data.socios;
+            document.getElementById('base_esc').value = data.base_esc;
+            document.getElementById('base_cax').value = data.base_cax;
+            document.getElementById('base_rep').value = data.base_rep;
+            
+            q.esc = data.q_esc;
+            q.cax = data.q_cax;
+            q.rep = data.q_rep;
+            
+            document.getElementById('qtd_esc').innerText = q.esc;
+            document.getElementById('qtd_cax').innerText = q.cax;
+            document.getElementById('qtd_rep').innerText = q.rep;
+            
+            run(false);
+        } catch (e) { console.error("Erro ao carregar dados:", e); }
+    }
+
+    function run(shouldSave = true) {
+        const fat = parseFloat(document.getElementById('fat_input').value) || 0;
+        const nSocios = parseInt(document.getElementById('socios_input').value) || 0;
+        const bEsc = parseFloat(document.getElementById('base_esc').value) || 0;
+        const bCax = parseFloat(document.getElementById('base_cax').value) || 0;
+        const bRep = parseFloat(document.getElementById('base_rep').value) || 0;
+
+        const rEsc = bEsc * 1.4;
+        const rCax = bCax * 1.4;
+        const rRep = bRep * 1.4;
+
+        const tEsc = q.esc * rEsc;
+        const tCax = q.cax * rCax;
+        const tRep = q.rep * rRep;
+
+        const folhaTotal = tEsc + tCax + tRep;
+        const perFolha = fat > 0 ? ((folhaTotal / fat) * 100).toFixed(1) : 0;
+        const tetoOp = fat * 0.65;
+        const sobraEstoque = tetoOp - folhaTotal;
+        const lucroTotalLiquido = fat * 0.25;
+
+        if (nSocios > 0) {
+            document.getElementById('label_lucro').innerText = `Rendimento por Sócio (${nSocios})`;
+            document.getElementById('res_socio').innerText = fmt.format(lucroTotalLiquido / nSocios);
+        } else {
+            document.getElementById('label_lucro').innerText = "Rendimento Líquido Único";
+            document.getElementById('res_socio').innerText = fmt.format(lucroTotalLiquido);
+        }
+
+        document.getElementById('real_esc').innerText = fmt.format(rEsc);
+        document.getElementById('real_cax').innerText = fmt.format(rCax);
+        document.getElementById('real_rep').innerText = fmt.format(rRep);
+        document.getElementById('sub_esc').innerText = fmt.format(tEsc);
+        document.getElementById('sub_cax').innerText = fmt.format(tCax);
+        document.getElementById('sub_rep').innerText = fmt.format(tRep);
+        document.getElementById('res_folha').innerText = fmt.format(folhaTotal);
+        document.getElementById('per_folha').innerText = perFolha + '%';
+
+        if (fat > 0) {
+            let recom = perFolha > 20 ? 
+                '<span style="color:var(--error)">ALERTA: Folha acima de 20%. Risco de liquidez.</span>' : 
+                '<span style="color:var(--success)">OTIMIZADO: Estrutura de pessoal saudável.</span>';
+
+            document.getElementById('analise').innerHTML = `
+                <strong>Relatório Analítico de Performance:</strong><br>
+                • Teto Operacional (Compras + Logística - 65%): <strong>${fmt.format(tetoOp)}</strong><br>
+                • Saldo para Reposição de Estoque: <strong>${fmt.format(sobraEstoque)}</strong><br>
+                • Fundo de Reserva & Expansão (10%): <strong>${fmt.format(fat * 0.1)}</strong><br>
+                • Custo de RH: <strong>${perFolha}%</strong> do faturamento bruto.<br><br>
+                <em>${recom}</em>
+            `;
+        } else {
+            document.getElementById('analise').innerText = "Aguardando faturamento...";
+        }
+
+        if (shouldSave) {
+            clearTimeout(saveTimeout);
+            showSavingStatus();
+            saveTimeout = setTimeout(saveToServer, 1000);
+        }
+    }
+
+    async function saveToServer() {
+        const payload = {
+            fat: parseFloat(document.getElementById('fat_input').value) || 0,
+            socios: parseInt(document.getElementById('socios_input').value) || 0,
+            base_esc: parseFloat(document.getElementById('base_esc').value) || 0,
+            base_cax: parseFloat(document.getElementById('base_cax').value) || 0,
+            base_rep: parseFloat(document.getElementById('base_rep').value) || 0,
+            q_esc: q.esc, q_cax: q.cax, q_rep: q.rep
+        };
+
+        try {
+            await fetch('/api/save_data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            showSavedStatus();
+        } catch (e) { console.error("Erro ao salvar:", e); }
+    }
+
+    function showSavingStatus() {
+        const indicator = document.getElementById('save_indicator');
+        indicator.classList.add('active');
+        document.getElementById('sync_dot').classList.add('syncing');
+        document.getElementById('sync_text').innerText = "Salvando...";
+    }
+
+    function showSavedStatus() {
+        document.getElementById('sync_dot').classList.remove('syncing');
+        document.getElementById('sync_text').innerText = "Sincronizado";
+        setTimeout(() => { document.getElementById('save_indicator').classList.remove('active'); }, 2000);
+    }
+    
+    window.onload = loadInitialData;
+</script>
+
+</body>
+</html>

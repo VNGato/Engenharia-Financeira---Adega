@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Adega Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --surface: rgba(20, 20, 20, 0.7);
+            --accent: #FFD700;
+            --accent-glow: rgba(255, 215, 0, 0.3);
+            --text: #FFFFFF;
+            --text-dim: #999999;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('/static/bg.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--text);
+        }
+
+        .login-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        p {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+            margin-left: 5px;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .alert {
+            background: rgba(255, 77, 77, 0.1);
+            color: #ff4d4d;
+            border: 1px solid rgba(255, 77, 77, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+        }
+
+        .setup-mode {
+            border: 1px dashed var(--accent);
+            padding: 5px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h1>Adega Intelligence</h1>
+    <p>Acesse o painel administrativo</p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if not user_exists %}
+    <div class="setup-mode">
+        <p style="color: var(--accent); font-weight: bold; margin-bottom: 5px; font-size: 0.7rem;">MODO PRIMEIRA CONFIGURAÇÃO</p>
+        <p style="font-size: 0.7rem; margin-bottom: 0;">Crie seu usuário e senha de acesso agora.</p>
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        <div class="form-group">
+            <label>Usuário</label>
+            <input type="text" name="username" required autofocus placeholder="Ex: admin">
+        </div>
+        <div class="form-group">
+            <label>Senha</label>
+            <input type="password" name="password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn-login">
+            {% if user_exists %}Entrar no Sistema{% else %}Criar Acesso Administrador{% endif %}
+        </button>
+    </form>
+</div>
+
+</body>
+</html>
