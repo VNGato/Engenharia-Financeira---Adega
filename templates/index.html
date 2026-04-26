@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adega Inteligência - Painel de Controle</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Montserrat:wght@700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --bg: #030303;
@@ -21,12 +24,16 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg);
-            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('/static/bg.png');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('/static/bg.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -51,7 +58,10 @@
             align-items: center;
         }
 
-        .header-main .title-group { text-align: left; }
+        .header-main .title-group {
+            text-align: left;
+        }
+
         .header-main h1 {
             font-family: 'Montserrat', sans-serif;
             font-size: 2.2rem;
@@ -69,7 +79,11 @@
             text-transform: uppercase;
         }
 
-        .nav-actions { display: flex; gap: 15px; }
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+        }
+
         .btn-nav {
             background: var(--glass);
             border: 1px solid var(--border);
@@ -84,8 +98,17 @@
             transition: var(--transition);
             cursor: pointer;
         }
-        .btn-nav:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
-        .btn-nav.danger:hover { background: rgba(255,77,77,0.1); border-color: var(--error); color: var(--error); }
+
+        .btn-nav:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+        }
+
+        .btn-nav.danger:hover {
+            background: rgba(255, 77, 77, 0.1);
+            border-color: var(--error);
+            color: var(--error);
+        }
 
         /* --- Status Indicator --- */
         .save-status {
@@ -106,11 +129,36 @@
             gap: 8px;
             z-index: 100;
         }
-        .save-status.active { opacity: 1; }
-        .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
-        .dot.syncing { background: var(--info); animation: pulse 1s infinite; }
 
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .save-status.active {
+            opacity: 1;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .dot.syncing {
+            background: var(--info);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
 
         /* --- Cards --- */
         .top-bar {
@@ -127,7 +175,7 @@
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transition: var(--transition);
         }
 
@@ -148,7 +196,7 @@
 
         .input-group input {
             width: 100%;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 15px;
@@ -163,7 +211,7 @@
         .input-group input:focus {
             border-color: var(--accent);
             box-shadow: 0 0 15px var(--accent-glow);
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .grid-pessoal {
@@ -183,7 +231,7 @@
         }
 
         .salary-input-row {
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
             padding: 15px;
             margin-bottom: 20px;
@@ -216,8 +264,10 @@
             font-size: 0.85rem;
             color: var(--text-dim);
         }
-        
-        .spec-row strong { color: var(--text); }
+
+        .spec-row strong {
+            color: var(--text);
+        }
 
         .counter-tool {
             display: flex;
@@ -277,12 +327,19 @@
         .card-result::after {
             content: '';
             position: absolute;
-            top: 0; left: 0;
-            width: 4px; height: 100%;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
         }
 
-        .card-result.blue::after { background: var(--info); }
-        .card-result.green::after { background: var(--success); }
+        .card-result.blue::after {
+            background: var(--info);
+        }
+
+        .card-result.green::after {
+            background: var(--success);
+        }
 
         .card-result .type-label {
             font-size: 0.7rem;
@@ -304,7 +361,7 @@
         }
 
         .card-result .percent-tag {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             padding: 2px 8px;
             border-radius: 4px;
             color: var(--info);
@@ -318,8 +375,16 @@
             border-left: 2px solid var(--accent);
         }
 
-        .analysis-engine strong { color: var(--accent); }
-        .analysis-engine em { font-style: normal; color: var(--info); font-size: 0.8rem; opacity: 0.8; }
+        .analysis-engine strong {
+            color: var(--accent);
+        }
+
+        .analysis-engine em {
+            font-style: normal;
+            color: var(--info);
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
 
         /* --- Hidden Knowledge Base (Calculus) --- */
         .knowledge-trigger {
@@ -336,9 +401,13 @@
             transition: var(--transition);
         }
 
-        .knowledge-trigger:hover { opacity: 0.8; }
-        
-        .eye-icon { font-size: 1.2rem; }
+        .knowledge-trigger:hover {
+            opacity: 0.8;
+        }
+
+        .eye-icon {
+            font-size: 1.2rem;
+        }
 
         .hidden-details {
             max-height: 0;
@@ -358,15 +427,20 @@
             margin-top: 10px;
         }
 
-        .knowledge-box p { margin-bottom: 15px; }
-        .knowledge-box strong { color: var(--text); }
+        .knowledge-box p {
+            margin-bottom: 15px;
+        }
+
+        .knowledge-box strong {
+            color: var(--text);
+        }
 
         .calc-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
             font-size: 0.8rem;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
             overflow: hidden;
         }
@@ -391,337 +465,442 @@
         }
 
         /* Ajuste para inputs com máscara */
-        .input-group input, .salary-input-row input {
+        .input-group input,
+        .salary-input-row input {
             text-align: center;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .fade-in { animation: fadeIn 0.6s ease forwards; }
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
 
         /* --- Print Styling --- */
         @media print {
-            body { background: white !important; color: black !important; padding: 0 !important; }
-            .container { max-width: 100% !important; margin: 0 !important; padding: 20px !important; }
-            .nav-actions, .counter-tool, .save-status, .btn-nav { display: none !important; }
-            .glass-card { background: white !important; border: 1px solid #ccc !important; box-shadow: none !important; backdrop-filter: none !important; color: black !important; page-break-inside: avoid; }
-            .input-group input, .salary-input-row input { color: black !important; border: 1px solid #ddd !important; background: #f9f9f9 !important; font-size: 1.2rem !important; }
-            h1, h3, label { color: #333 !important; text-shadow: none !important; }
-            strong, .main-value, .total-badge strong { color: black !important; }
-            .analysis-engine { border-left-color: #333 !important; background: #f1f1f1 !important; color: #111 !important; }
-            .card-result::after { background: #333 !important; }
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+            }
+
+            .container {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 20px !important;
+            }
+
+            .nav-actions,
+            .counter-tool,
+            .save-status,
+            .btn-nav {
+                display: none !important;
+            }
+
+            .glass-card {
+                background: white !important;
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+                backdrop-filter: none !important;
+                color: black !important;
+                page-break-inside: avoid;
+            }
+
+            .input-group input,
+            .salary-input-row input {
+                color: black !important;
+                border: 1px solid #ddd !important;
+                background: #f9f9f9 !important;
+                font-size: 1.2rem !important;
+            }
+
+            h1,
+            h3,
+            label {
+                color: #333 !important;
+                text-shadow: none !important;
+            }
+
+            strong,
+            .main-value,
+            .total-badge strong {
+                color: black !important;
+            }
+
+            .analysis-engine {
+                border-left-color: #333 !important;
+                background: #f1f1f1 !important;
+                color: #111 !important;
+            }
+
+            .card-result::after {
+                background: #333 !important;
+            }
         }
 
         @media (max-width: 768px) {
-            .header-main { flex-direction: column; text-align: center; gap: 20px; }
-            .header-main .title-group { text-align: center; }
-            .header-main h1 { font-size: 1.6rem; }
-            body { padding: 20px 15px; }
+            .header-main {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .header-main .title-group {
+                text-align: center;
+            }
+
+            .header-main h1 {
+                font-size: 1.6rem;
+            }
+
+            body {
+                padding: 20px 15px;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div id="save_indicator" class="save-status">
-    <div id="sync_dot" class="dot"></div>
-    <span id="sync_text">Dados Sincronizados</span>
-</div>
+    <div id="save_indicator" class="save-status">
+        <div id="sync_dot" class="dot"></div>
+        <span id="sync_text">Dados Sincronizados</span>
+    </div>
 
-<div class="container">
-    <header class="header-main fade-in">
-        <div class="title-group">
-            <h1>Adega Inteligência</h1>
-            <p>Engenharia Fiscal & Controle Financeiro</p>
-        </div>
-        <div class="nav-actions">
-            <button class="btn-nav" onclick="window.print()">Exportar Relatório</button>
-            <a href="/logout" class="btn-nav danger">Sair do Sistema</a>
-        </div>
-    </header>
+    <div class="container">
+        <header class="header-main fade-in">
+            <div class="title-group">
+                <h1>Adega Inteligência</h1>
+                <p>Engenharia Fiscal & Controle Financeiro</p>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-nav" onclick="window.print()">Exportar Relatório</button>
+                <a href="/logout" class="btn-nav danger">Sair do Sistema</a>
+            </div>
+        </header>
 
-    <div class="top-bar fade-in" style="animation-delay: 0.1s;">
-        <div class="glass-card input-group">
-            <label>Faturamento Bruto Mensal</label>
-            <input type="text" id="fat_input" value="R$ 0,00" oninput="handleMoneyInput(this)">
+        <div class="top-bar fade-in" style="animation-delay: 0.1s;">
+            <div class="glass-card input-group">
+                <label>Faturamento Bruto Mensal</label>
+                <input type="text" id="fat_input" value="R$ 0,00" oninput="handleMoneyInput(this)">
+            </div>
+            <div class="glass-card input-group">
+                <label>Nº de Sócios (0 = Individual)</label>
+                <input type="number" id="socios_input" value="0" min="0" oninput="run()">
+            </div>
         </div>
-        <div class="glass-card input-group">
-            <label>Nº de Sócios (0 = Individual)</label>
-            <input type="number" id="socios_input" value="0" min="0" oninput="run()">
+
+        <div class="grid-pessoal">
+            <!-- Escritório -->
+            <div class="glass-card category-card fade-in" style="animation-delay: 0.2s;">
+                <h3>Gestão & Estratégico(Escritório)</h3>
+                <div class="salary-input-row">
+                    <label>Pro-labore Médio (R$)</label>
+                    <input type="text" id="base_esc" value="R$ 0,00" oninput="handleMoneyInput(this)">
+                </div>
+                <div class="spec-row">
+                    <span>Custo Real (+40% encargos)</span>
+                    <strong id="real_esc">R$ 0,00</strong>
+                </div>
+                <div class="counter-tool">
+                    <button onclick="updateQtd('esc', -1)">−</button>
+                    <span id="qtd_esc">0</span>
+                    <button onclick="updateQtd('esc', 1)">+</button>
+                </div>
+                <div class="total-badge">
+                    <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
+                    <strong id="sub_esc" style="color: var(--info);">R$ 0,00</strong>
+                </div>
+            </div>
+
+            <!-- Caixa -->
+            <div class="glass-card category-card fade-in" style="animation-delay: 0.3s;">
+                <h3>Operacional / Caixa</h3>
+                <div class="salary-input-row">
+                    <label>Salário Base (R$)</label>
+                    <input type="text" id="base_cax" value="R$ 0,00" oninput="handleMoneyInput(this)">
+                </div>
+                <div class="spec-row">
+                    <span>Custo Real (+40% encargos)</span>
+                    <strong id="real_cax">R$ 0,00</strong>
+                </div>
+                <div class="counter-tool">
+                    <button onclick="updateQtd('cax', -1)">−</button>
+                    <span id="qtd_cax">0</span>
+                    <button onclick="updateQtd('cax', 1)">+</button>
+                </div>
+                <div class="total-badge">
+                    <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
+                    <strong id="sub_cax" style="color: var(--info);">R$ 0,00</strong>
+                </div>
+            </div>
+
+            <!-- Atendente -->
+            <div class="glass-card category-card fade-in" style="animation-delay: 0.4s;">
+                <h3>Atendente / Repositor</h3>
+                <div class="salary-input-row">
+                    <label>Salário Base (R$)</label>
+                    <input type="text" id="base_rep" value="R$ 0,00" oninput="handleMoneyInput(this)">
+                </div>
+                <div class="spec-row">
+                    <span>Custo Real (+40% encargos)</span>
+                    <strong id="real_rep">R$ 0,00</strong>
+                </div>
+                <div class="counter-tool">
+                    <button onclick="updateQtd('rep', -1)">−</button>
+                    <span id="qtd_rep">0</span>
+                    <button onclick="updateQtd('rep', 1)">+</button>
+                </div>
+                <div class="total-badge">
+                    <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
+                    <strong id="sub_rep" style="color: var(--info);">R$ 0,00</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-grid">
+            <div class="glass-card card-result blue fade-in" style="animation-delay: 0.5s;">
+                <div class="type-label">Folha de Pagamento Total</div>
+                <div class="main-value" id="res_folha" style="color: var(--info);">R$ 0,00</div>
+                <div class="sub-detail">
+                    Comprometimento: <span class="percent-tag" id="per_folha">0%</span> do faturamento.
+                </div>
+            </div>
+
+            <div class="glass-card card-result green fade-in" style="animation-delay: 0.6s;">
+                <div class="type-label" id="label_lucro">Rendimento Proprietário</div>
+                <div class="main-value" id="res_socio" style="color: var(--success);">R$ 0,00</div>
+                <div class="sub-detail" id="detalhe_lucro">Baseado na margem operacional de 25%.</div>
+            </div>
+        </div>
+
+        <div class="glass-card analysis-engine fade-in" id="analise" style="animation-delay: 0.7s;">
+            Sincronizando motores de cálculo...
+        </div>
+
+        <!-- Base de Cálculo Oculta -->
+        <div class="glass-card knowledge-box fade-in" style="animation-delay: 0.8s; margin-top: 25px;">
+            <div class="knowledge-trigger" onclick="toggleKnowledge()">
+                <span>Visualizar Base de Cálculo & Engenharia Financeira</span>
+                <span class="eye-icon" id="eye_btn">👁️</span>
+            </div>
+
+            <div class="hidden-details" id="knowledge_content">
+                <p>
+                    Para um sistema de escala profissional, não calculamos apenas o salário líquido (o que cai na conta
+                    do trabalhador),
+                    mas sim o <strong>Custo de Ocupação</strong>. Na gestão de alta performance, trabalhamos com o custo
+                    real do "recurso humano".
+                </p>
+
+                <p>
+                    <strong>1. Linha Lógica:</strong> Utilizei um multiplicador médio de <strong>1,4x</strong> sobre o
+                    salário base.
+                    Isso é necessário para cobrir os encargos legais e as provisões obrigatórias que evitam o "débito
+                    técnico" financeiro.
+                </p>
+
+                <p>
+                    <strong>2. Raciocínio (Decomposição):</strong> Para um custo de R$ 3.500,00 por funcionário, a
+                    estrutura é:
+                </p>
+
+                <table class="calc-table">
+                    <thead>
+                        <tr>
+                            <th>Item de Custo</th>
+                            <th>Médio Individual</th>
+                            <th id="calc_total_header">Total Real (0 Colaboradores)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Salário Base Bruto</td>
+                            <td id="calc_base_ind">R$ 0,00</td>
+                            <td id="calc_base_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Provisão Férias + 1/3 (11.11%)</td>
+                            <td id="calc_ferias_ind">R$ 0,00</td>
+                            <td id="calc_ferias_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Provisão 13º Salário (8.33%)</td>
+                            <td id="calc_13_ind">R$ 0,00</td>
+                            <td id="calc_13_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>FGTS + Encargos Legais (12%)</td>
+                            <td id="calc_fgts_ind">R$ 0,00</td>
+                            <td id="calc_fgts_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Benefícios / Auxílios (8.56%)</td>
+                            <td id="calc_ben_ind">R$ 0,00</td>
+                            <td id="calc_ben_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>INVESTIMENTO TOTAL REAL</td>
+                            <td id="calc_invest_ind">R$ 0,00</td>
+                            <td id="calc_invest_total">R$ 0,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>
+                    <strong>3. Prevenção:</strong> A arquitetura de <strong>65% para a "Operação"</strong> previne o
+                    colapso porque destina o valor necessário para a Folha e reserva o restante para o CMV (Estoque) e
+                    Custos Fixos (Aluguel/Luz).
+                </p>
+
+                <p style="font-size: 0.8rem; font-style: italic;">
+                    * Se os seus funcionários ganham valores diferentes, o dashboard adapta a "Reserva Ideal"
+                    automaticamente com base no multiplicador de Engenharia Financeira de 1.4x.
+                </p>
+            </div>
         </div>
     </div>
 
-    <div class="grid-pessoal">
-        <!-- Escritório -->
-        <div class="glass-card category-card fade-in" style="animation-delay: 0.2s;">
-            <h3>Gestão & Estratégico</h3>
-            <div class="salary-input-row">
-                <label>Pro-labore Médio (R$)</label>
-                <input type="text" id="base_esc" value="R$ 0,00" oninput="handleMoneyInput(this)">
-            </div>
-            <div class="spec-row">
-                <span>Custo Real (+40% encargos)</span>
-                <strong id="real_esc">R$ 0,00</strong>
-            </div>
-            <div class="counter-tool">
-                <button onclick="updateQtd('esc', -1)">−</button>
-                <span id="qtd_esc">0</span>
-                <button onclick="updateQtd('esc', 1)">+</button>
-            </div>
-            <div class="total-badge">
-                <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
-                <strong id="sub_esc" style="color: var(--info);">R$ 0,00</strong>
-            </div>
-        </div>
+    <script>
+        let q = { esc: 0, cax: 0, rep: 0 };
+        let saveTimeout;
+        const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
-        <!-- Caixa -->
-        <div class="glass-card category-card fade-in" style="animation-delay: 0.3s;">
-            <h3>Operacional / Caixa</h3>
-            <div class="salary-input-row">
-                <label>Salário Base (R$)</label>
-                <input type="text" id="base_cax" value="R$ 0,00" oninput="handleMoneyInput(this)">
-            </div>
-            <div class="spec-row">
-                <span>Custo Real (+40% encargos)</span>
-                <strong id="real_cax">R$ 0,00</strong>
-            </div>
-            <div class="counter-tool">
-                <button onclick="updateQtd('cax', -1)">−</button>
-                <span id="qtd_cax">0</span>
-                <button onclick="updateQtd('cax', 1)">+</button>
-            </div>
-            <div class="total-badge">
-                <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
-                <strong id="sub_cax" style="color: var(--info);">R$ 0,00</strong>
-            </div>
-        </div>
-
-        <!-- Atendente -->
-        <div class="glass-card category-card fade-in" style="animation-delay: 0.4s;">
-            <h3>Atendimento / Estoque</h3>
-            <div class="salary-input-row">
-                <label>Salário Base (R$)</label>
-                <input type="text" id="base_rep" value="R$ 0,00" oninput="handleMoneyInput(this)">
-            </div>
-            <div class="spec-row">
-                <span>Custo Real (+40% encargos)</span>
-                <strong id="real_rep">R$ 0,00</strong>
-            </div>
-            <div class="counter-tool">
-                <button onclick="updateQtd('rep', -1)">−</button>
-                <span id="qtd_rep">0</span>
-                <button onclick="updateQtd('rep', 1)">+</button>
-            </div>
-            <div class="total-badge">
-                <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
-                <strong id="sub_rep" style="color: var(--info);">R$ 0,00</strong>
-            </div>
-        </div>
-    </div>
-
-    <div class="summary-grid">
-        <div class="glass-card card-result blue fade-in" style="animation-delay: 0.5s;">
-            <div class="type-label">Folha de Pagamento Total</div>
-            <div class="main-value" id="res_folha" style="color: var(--info);">R$ 0,00</div>
-            <div class="sub-detail">
-                Comprometimento: <span class="percent-tag" id="per_folha">0%</span> do faturamento.
-            </div>
-        </div>
-
-        <div class="glass-card card-result green fade-in" style="animation-delay: 0.6s;">
-            <div class="type-label" id="label_lucro">Rendimento Proprietário</div>
-            <div class="main-value" id="res_socio" style="color: var(--success);">R$ 0,00</div>
-            <div class="sub-detail" id="detalhe_lucro">Baseado na margem operacional de 25%.</div>
-        </div>
-    </div>
-
-    <div class="glass-card analysis-engine fade-in" id="analise" style="animation-delay: 0.7s;">
-        Sincronizando motores de cálculo...
-    </div>
-
-    <!-- Base de Cálculo Oculta -->
-    <div class="glass-card knowledge-box fade-in" style="animation-delay: 0.8s; margin-top: 25px;">
-        <div class="knowledge-trigger" onclick="toggleKnowledge()">
-            <span>Visualizar Base de Cálculo & Engenharia Financeira</span>
-            <span class="eye-icon" id="eye_btn">👁️</span>
-        </div>
-        
-        <div class="hidden-details" id="knowledge_content">
-            <p>
-                Para um sistema de escala profissional, não calculamos apenas o salário líquido (o que cai na conta do trabalhador), 
-                mas sim o <strong>Custo de Ocupação</strong>. Na gestão de alta performance, trabalhamos com o custo real do "recurso humano".
-            </p>
-            
-            <p>
-                <strong>1. Linha Lógica:</strong> Utilizei um multiplicador médio de <strong>1,4x</strong> sobre o salário base. 
-                Isso é necessário para cobrir os encargos legais e as provisões obrigatórias que evitam o "débito técnico" financeiro.
-            </p>
-
-            <p>
-                <strong>2. Raciocínio (Decomposição):</strong> Para um custo de R$ 3.500,00 por funcionário, a estrutura é:
-            </p>
-
-            <table class="calc-table">
-                <thead>
-                    <tr>
-                        <th>Item de Custo</th>
-                        <th>Médio Individual</th>
-                        <th id="calc_total_header">Total Real (0 Colaboradores)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Salário Base Bruto</td><td id="calc_base_ind">R$ 0,00</td><td id="calc_base_total">R$ 0,00</td></tr>
-                    <tr><td>Provisão Férias + 1/3 (11.11%)</td><td id="calc_ferias_ind">R$ 0,00</td><td id="calc_ferias_total">R$ 0,00</td></tr>
-                    <tr><td>Provisão 13º Salário (8.33%)</td><td id="calc_13_ind">R$ 0,00</td><td id="calc_13_total">R$ 0,00</td></tr>
-                    <tr><td>FGTS + Encargos Legais (12%)</td><td id="calc_fgts_ind">R$ 0,00</td><td id="calc_fgts_total">R$ 0,00</td></tr>
-                    <tr><td>Benefícios / Auxílios (8.56%)</td><td id="calc_ben_ind">R$ 0,00</td><td id="calc_ben_total">R$ 0,00</td></tr>
-                    <tr><td>INVESTIMENTO TOTAL REAL</td><td id="calc_invest_ind">R$ 0,00</td><td id="calc_invest_total">R$ 0,00</td></tr>
-                </tbody>
-            </table>
-
-            <p>
-                <strong>3. Prevenção:</strong> A arquitetura de <strong>65% para a "Operação"</strong> previne o colapso porque destina o valor necessário para a Folha e reserva o restante para o CMV (Estoque) e Custos Fixos (Aluguel/Luz).
-            </p>
-            
-            <p style="font-size: 0.8rem; font-style: italic;">
-                * Se os seus funcionários ganham valores diferentes, o dashboard adapta a "Reserva Ideal" automaticamente com base no multiplicador de Engenharia Financeira de 1.4x.
-            </p>
-        </div>
-    </div>
-</div>
-
-<script>
-    let q = { esc: 0, cax: 0, rep: 0 };
-    let saveTimeout;
-    const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    function formatCurrency(value) {
-        return fmt.format(value);
-    }
-
-    function parseCurrency(value) {
-        if (typeof value === 'number') return value;
-        const cleanValue = value.replace(/[R$\s.]/g, '').replace(',', '.');
-        return parseFloat(cleanValue) || 0;
-    }
-
-    function handleMoneyInput(input) {
-        let value = input.value.replace(/\D/g, '');
-        value = (value / 100).toFixed(2);
-        input.value = fmt.format(value);
-        run();
-    }
-
-    function updateQtd(t, d) {
-        q[t] += d;
-        if (q[t] < 0) q[t] = 0;
-        document.getElementById(`qtd_${t}`).innerText = q[t];
-        run();
-    }
-
-    async function loadInitialData() {
-        try {
-            const res = await fetch('/api/get_data');
-            if (res.status === 401) { window.location.href = '/login'; return; }
-            const data = await res.json();
-            
-            document.getElementById('fat_input').value = fmt.format(data.fat || 0);
-            document.getElementById('socios_input').value = data.socios;
-            document.getElementById('base_esc').value = fmt.format(data.base_esc || 0);
-            document.getElementById('base_cax').value = fmt.format(data.base_cax || 0);
-            document.getElementById('base_rep').value = fmt.format(data.base_rep || 0);
-            
-            q.esc = data.q_esc;
-            q.cax = data.q_cax;
-            q.rep = data.q_rep;
-            
-            document.getElementById('qtd_esc').innerText = q.esc;
-            document.getElementById('qtd_cax').innerText = q.cax;
-            document.getElementById('qtd_rep').innerText = q.rep;
-            
-            run(false);
-        } catch (e) { console.error("Erro ao carregar dados:", e); }
-    }
-
-    function run(shouldSave = true) {
-        const fat = parseCurrency(document.getElementById('fat_input').value);
-        const nSocios = parseInt(document.getElementById('socios_input').value) || 0;
-        const bEsc = parseCurrency(document.getElementById('base_esc').value);
-        const bCax = parseCurrency(document.getElementById('base_cax').value);
-        const bRep = parseCurrency(document.getElementById('base_rep').value);
-
-        const rEsc = bEsc * 1.4;
-        const rCax = bCax * 1.4;
-        const rRep = bRep * 1.4;
-
-        const tEsc = q.esc * rEsc;
-        const tCax = q.cax * rCax;
-        const tRep = q.rep * rRep;
-
-        const folhaTotal = tEsc + tCax + tRep;
-        const perFolha = fat > 0 ? ((folhaTotal / fat) * 100).toFixed(1) : 0;
-        const tetoOp = fat * 0.65;
-        const sobraEstoque = tetoOp - folhaTotal;
-        const lucroTotalLiquido = fat * 0.25;
-
-        if (nSocios > 0) {
-            document.getElementById('label_lucro').innerText = `Rendimento por Sócio (${nSocios})`;
-            document.getElementById('res_socio').innerText = fmt.format(lucroTotalLiquido / nSocios);
-        } else {
-            document.getElementById('label_lucro').innerText = "Rendimento Líquido Único";
-            document.getElementById('res_socio').innerText = fmt.format(lucroTotalLiquido);
+        function formatCurrency(value) {
+            return fmt.format(value);
         }
 
-        document.getElementById('real_esc').innerText = fmt.format(rEsc);
-        document.getElementById('real_cax').innerText = fmt.format(rCax);
-        document.getElementById('real_rep').innerText = fmt.format(rRep);
-        document.getElementById('sub_esc').innerText = fmt.format(tEsc);
-        document.getElementById('sub_cax').innerText = fmt.format(tCax);
-        document.getElementById('sub_rep').innerText = fmt.format(tRep);
-        document.getElementById('res_folha').innerText = fmt.format(folhaTotal);
-        document.getElementById('per_folha').innerText = perFolha + '%';
+        function parseCurrency(value) {
+            if (typeof value === 'number') return value;
+            const cleanValue = value.replace(/[R$\s.]/g, '').replace(',', '.');
+            return parseFloat(cleanValue) || 0;
+        }
 
-        // --- Atualização da Tabela Dinâmica de Engenharia Financeira ---
-        const totalColab = q.esc + q.cax + q.rep;
-        const folhaBrutaTotal = (q.esc * bEsc) + (q.cax * bCax) + (q.rep * bRep);
-        const mediaSalarial = totalColab > 0 ? folhaBrutaTotal / totalColab : 0;
+        function handleMoneyInput(input) {
+            let value = input.value.replace(/\D/g, '');
+            value = (value / 100).toFixed(2);
+            input.value = fmt.format(value);
+            run();
+        }
 
-        // Distribuição Proporcional (40% de encargos distribuídos)
-        const calcData = {
-            base: mediaSalarial,
-            ferias: mediaSalarial * 0.1111,
-            decimo: mediaSalarial * 0.0833,
-            fgts: mediaSalarial * 0.12,
-            ben: mediaSalarial * 0.0856,
-            total: mediaSalarial * 1.4
-        };
+        function updateQtd(t, d) {
+            q[t] += d;
+            if (q[t] < 0) q[t] = 0;
+            document.getElementById(`qtd_${t}`).innerText = q[t];
+            run();
+        }
 
-        document.getElementById('calc_total_header').innerText = `Total Real (${totalColab} Colaboradores)`;
-        
-        // Coluna Individual
-        document.getElementById('calc_base_ind').innerText = fmt.format(calcData.base);
-        document.getElementById('calc_ferias_ind').innerText = fmt.format(calcData.ferias);
-        document.getElementById('calc_13_ind').innerText = fmt.format(calcData.decimo);
-        document.getElementById('calc_fgts_ind').innerText = fmt.format(calcData.fgts);
-        document.getElementById('calc_ben_ind').innerText = fmt.format(calcData.ben);
-        document.getElementById('calc_invest_ind').innerText = fmt.format(calcData.total);
+        async function loadInitialData() {
+            try {
+                const res = await fetch('/api/get_data');
+                if (res.status === 401) { window.location.href = '/login'; return; }
+                const data = await res.json();
 
-        // Coluna Total
-        document.getElementById('calc_base_total').innerText = fmt.format(calcData.base * totalColab);
-        document.getElementById('calc_ferias_total').innerText = fmt.format(calcData.ferias * totalColab);
-        document.getElementById('calc_13_total').innerText = fmt.format(calcData.decimo * totalColab);
-        document.getElementById('calc_fgts_total').innerText = fmt.format(calcData.fgts * totalColab);
-        document.getElementById('calc_ben_total').innerText = fmt.format(calcData.ben * totalColab);
-        document.getElementById('calc_invest_total').innerText = fmt.format(calcData.total * totalColab);
+                document.getElementById('fat_input').value = fmt.format(data.fat || 0);
+                document.getElementById('socios_input').value = data.socios;
+                document.getElementById('base_esc').value = fmt.format(data.base_esc || 0);
+                document.getElementById('base_cax').value = fmt.format(data.base_cax || 0);
+                document.getElementById('base_rep').value = fmt.format(data.base_rep || 0);
 
-        if (fat > 0) {
-            let recom = perFolha > 20 ? 
-                '<span style="color:var(--error)">ALERTA: Folha acima de 20%. Risco de liquidez.</span>' : 
-                '<span style="color:var(--success)">OTIMIZADO: Estrutura de pessoal saudável.</span>';
+                q.esc = data.q_esc;
+                q.cax = data.q_cax;
+                q.rep = data.q_rep;
 
-            document.getElementById('analise').innerHTML = `
+                document.getElementById('qtd_esc').innerText = q.esc;
+                document.getElementById('qtd_cax').innerText = q.cax;
+                document.getElementById('qtd_rep').innerText = q.rep;
+
+                run(false);
+            } catch (e) { console.error("Erro ao carregar dados:", e); }
+        }
+
+        function run(shouldSave = true) {
+            const fat = parseCurrency(document.getElementById('fat_input').value);
+            const nSocios = parseInt(document.getElementById('socios_input').value) || 0;
+            const bEsc = parseCurrency(document.getElementById('base_esc').value);
+            const bCax = parseCurrency(document.getElementById('base_cax').value);
+            const bRep = parseCurrency(document.getElementById('base_rep').value);
+
+            const rEsc = bEsc * 1.4;
+            const rCax = bCax * 1.4;
+            const rRep = bRep * 1.4;
+
+            const tEsc = q.esc * rEsc;
+            const tCax = q.cax * rCax;
+            const tRep = q.rep * rRep;
+
+            const folhaTotal = tEsc + tCax + tRep;
+            const perFolha = fat > 0 ? ((folhaTotal / fat) * 100).toFixed(1) : 0;
+            const tetoOp = fat * 0.65;
+            const sobraEstoque = tetoOp - folhaTotal;
+            const lucroTotalLiquido = fat * 0.25;
+
+            if (nSocios > 0) {
+                document.getElementById('label_lucro').innerText = `Rendimento por Sócio (${nSocios})`;
+                document.getElementById('res_socio').innerText = fmt.format(lucroTotalLiquido / nSocios);
+            } else {
+                document.getElementById('label_lucro').innerText = "Rendimento Líquido Único";
+                document.getElementById('res_socio').innerText = fmt.format(lucroTotalLiquido);
+            }
+
+            document.getElementById('real_esc').innerText = fmt.format(rEsc);
+            document.getElementById('real_cax').innerText = fmt.format(rCax);
+            document.getElementById('real_rep').innerText = fmt.format(rRep);
+            document.getElementById('sub_esc').innerText = fmt.format(tEsc);
+            document.getElementById('sub_cax').innerText = fmt.format(tCax);
+            document.getElementById('sub_rep').innerText = fmt.format(tRep);
+            document.getElementById('res_folha').innerText = fmt.format(folhaTotal);
+            document.getElementById('per_folha').innerText = perFolha + '%';
+
+            // --- Atualização da Tabela Dinâmica de Engenharia Financeira ---
+            const totalColab = q.esc + q.cax + q.rep;
+            const folhaBrutaTotal = (q.esc * bEsc) + (q.cax * bCax) + (q.rep * bRep);
+            const mediaSalarial = totalColab > 0 ? folhaBrutaTotal / totalColab : 0;
+
+            // Distribuição Proporcional (40% de encargos distribuídos)
+            const calcData = {
+                base: mediaSalarial,
+                ferias: mediaSalarial * 0.1111,
+                decimo: mediaSalarial * 0.0833,
+                fgts: mediaSalarial * 0.12,
+                ben: mediaSalarial * 0.0856,
+                total: mediaSalarial * 1.4
+            };
+
+            document.getElementById('calc_total_header').innerText = `Total Real (${totalColab} Colaboradores)`;
+
+            // Coluna Individual
+            document.getElementById('calc_base_ind').innerText = fmt.format(calcData.base);
+            document.getElementById('calc_ferias_ind').innerText = fmt.format(calcData.ferias);
+            document.getElementById('calc_13_ind').innerText = fmt.format(calcData.decimo);
+            document.getElementById('calc_fgts_ind').innerText = fmt.format(calcData.fgts);
+            document.getElementById('calc_ben_ind').innerText = fmt.format(calcData.ben);
+            document.getElementById('calc_invest_ind').innerText = fmt.format(calcData.total);
+
+            // Coluna Total
+            document.getElementById('calc_base_total').innerText = fmt.format(calcData.base * totalColab);
+            document.getElementById('calc_ferias_total').innerText = fmt.format(calcData.ferias * totalColab);
+            document.getElementById('calc_13_total').innerText = fmt.format(calcData.decimo * totalColab);
+            document.getElementById('calc_fgts_total').innerText = fmt.format(calcData.fgts * totalColab);
+            document.getElementById('calc_ben_total').innerText = fmt.format(calcData.ben * totalColab);
+            document.getElementById('calc_invest_total').innerText = fmt.format(calcData.total * totalColab);
+
+            if (fat > 0) {
+                let recom = perFolha > 20 ?
+                    '<span style="color:var(--error)">ALERTA: Folha acima de 20%. Risco de liquidez.</span>' :
+                    '<span style="color:var(--success)">OTIMIZADO: Estrutura de pessoal saudável.</span>';
+
+                document.getElementById('analise').innerHTML = `
                 <strong>Relatório Analítico de Performance:</strong><br>
                 • Teto Operacional (Compras + Logística - 65%): <strong>${fmt.format(tetoOp)}</strong><br>
                 • Saldo para Reposição de Estoque: <strong>${fmt.format(sobraEstoque)}</strong><br>
@@ -729,59 +908,60 @@
                 • Custo de RH: <strong>${perFolha}%</strong> do faturamento bruto.<br><br>
                 <em>${recom}</em>
             `;
-        } else {
-            document.getElementById('analise').innerText = "Aguardando faturamento...";
+            } else {
+                document.getElementById('analise').innerText = "Aguardando faturamento...";
+            }
+
+            if (shouldSave) {
+                clearTimeout(saveTimeout);
+                showSavingStatus();
+                saveTimeout = setTimeout(saveToServer, 1000);
+            }
         }
 
-        if (shouldSave) {
-            clearTimeout(saveTimeout);
-            showSavingStatus();
-            saveTimeout = setTimeout(saveToServer, 1000);
+        async function saveToServer() {
+            const payload = {
+                fat: parseCurrency(document.getElementById('fat_input').value),
+                socios: parseInt(document.getElementById('socios_input').value) || 0,
+                base_esc: parseCurrency(document.getElementById('base_esc').value),
+                base_cax: parseCurrency(document.getElementById('base_cax').value),
+                base_rep: parseCurrency(document.getElementById('base_rep').value),
+                q_esc: q.esc, q_cax: q.cax, q_rep: q.rep
+            };
+
+            try {
+                await fetch('/api/save_data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                showSavedStatus();
+            } catch (e) { console.error("Erro ao salvar:", e); }
         }
-    }
 
-    async function saveToServer() {
-        const payload = {
-            fat: parseCurrency(document.getElementById('fat_input').value),
-            socios: parseInt(document.getElementById('socios_input').value) || 0,
-            base_esc: parseCurrency(document.getElementById('base_esc').value),
-            base_cax: parseCurrency(document.getElementById('base_cax').value),
-            base_rep: parseCurrency(document.getElementById('base_rep').value),
-            q_esc: q.esc, q_cax: q.cax, q_rep: q.rep
-        };
+        function showSavingStatus() {
+            const indicator = document.getElementById('save_indicator');
+            indicator.classList.add('active');
+            document.getElementById('sync_dot').classList.add('syncing');
+            document.getElementById('sync_text').innerText = "Salvando...";
+        }
 
-        try {
-            await fetch('/api/save_data', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            showSavedStatus();
-        } catch (e) { console.error("Erro ao salvar:", e); }
-    }
+        function showSavedStatus() {
+            document.getElementById('sync_dot').classList.remove('syncing');
+            document.getElementById('sync_text').innerText = "Sincronizado";
+            setTimeout(() => { document.getElementById('save_indicator').classList.remove('active'); }, 2000);
+        }
 
-    function showSavingStatus() {
-        const indicator = document.getElementById('save_indicator');
-        indicator.classList.add('active');
-        document.getElementById('sync_dot').classList.add('syncing');
-        document.getElementById('sync_text').innerText = "Salvando...";
-    }
+        function toggleKnowledge() {
+            const content = document.getElementById('knowledge_content');
+            const eye = document.getElementById('eye_btn');
+            content.classList.toggle('open');
+            eye.innerText = content.classList.contains('open') ? '🕶️' : '👁️';
+        }
 
-    function showSavedStatus() {
-        document.getElementById('sync_dot').classList.remove('syncing');
-        document.getElementById('sync_text').innerText = "Sincronizado";
-        setTimeout(() => { document.getElementById('save_indicator').classList.remove('active'); }, 2000);
-    }
-
-    function toggleKnowledge() {
-        const content = document.getElementById('knowledge_content');
-        const eye = document.getElementById('eye_btn');
-        content.classList.toggle('open');
-        eye.innerText = content.classList.contains('open') ? '🕶️' : '👁️';
-    }
-    
-    window.onload = loadInitialData;
-</script>
+        window.onload = loadInitialData;
+    </script>
 
 </body>
+
 </html>
