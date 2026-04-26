@@ -942,9 +942,18 @@
 
         async function clearDatabase() {
             if (confirm("Deseja realmente excluir os dados já cadastrados no banco?")) {
+                clearTimeout(saveTimeout); // Para qualquer salvamento pendente
                 try {
                     await fetch('/api/clear_data', { method: 'POST' });
-                    location.reload(); // Recarrega para limpar tudo visualmente
+                    // Limpa logo na tela para feedback instantâneo
+                    document.getElementById('fat_input').value = "R$ 0,00";
+                    document.getElementById('base_esc').value = "R$ 0,00";
+                    document.getElementById('base_cax').value = "R$ 0,00";
+                    document.getElementById('base_rep').value = "R$ 0,00";
+                    document.getElementById('socios_input').value = 0;
+                    q = { esc: 0, cax: 0, rep: 0 };
+                    
+                    location.reload(); 
                 } catch (e) { console.error("Erro ao limpar banco:", e); }
             }
         }

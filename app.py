@@ -124,6 +124,7 @@ def clear_data():
         state.q_esc = 0
         state.q_cax = 0
         state.q_rep = 0
+        db.session.add(state)
         db.session.commit()
     return jsonify({"status": "success"})
 
