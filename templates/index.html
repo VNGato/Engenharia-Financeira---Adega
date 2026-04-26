@@ -562,17 +562,17 @@
                 <thead>
                     <tr>
                         <th>Item de Custo</th>
-                        <th>Valor Individual</th>
-                        <th>Total (Ex: 10 Func.)</th>
+                        <th>Médio Individual</th>
+                        <th id="calc_total_header">Total Real (0 Colaboradores)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Salário Base Médio</td><td>R$ 2.500,00</td><td>R$ 25.000,00</td></tr>
-                    <tr><td>Provisão Férias + 1/3</td><td>R$ 277,00</td><td>R$ 2.770,00</td></tr>
-                    <tr><td>Provisão 13º Salário</td><td>R$ 208,00</td><td>R$ 2.080,00</td></tr>
-                    <tr><td>FGTS + Encargos (40%)</td><td>R$ 300,00</td><td>R$ 3.000,00</td></tr>
-                    <tr><td>Benefícios (VT/VR/Média)</td><td>R$ 215,00</td><td>R$ 2.150,00</td></tr>
-                    <tr><td>TOTAL DO INVESTIMENTO</td><td>R$ 3.500,00</td><td>R$ 35.000,00</td></tr>
+                    <tr><td>Salário Base Bruto</td><td id="calc_base_ind">R$ 0,00</td><td id="calc_base_total">R$ 0,00</td></tr>
+                    <tr><td>Provisão Férias + 1/3 (11.11%)</td><td id="calc_ferias_ind">R$ 0,00</td><td id="calc_ferias_total">R$ 0,00</td></tr>
+                    <tr><td>Provisão 13º Salário (8.33%)</td><td id="calc_13_ind">R$ 0,00</td><td id="calc_13_total">R$ 0,00</td></tr>
+                    <tr><td>FGTS + Encargos Legais (12%)</td><td id="calc_fgts_ind">R$ 0,00</td><td id="calc_fgts_total">R$ 0,00</td></tr>
+                    <tr><td>Benefícios / Auxílios (8.56%)</td><td id="calc_ben_ind">R$ 0,00</td><td id="calc_ben_total">R$ 0,00</td></tr>
+                    <tr><td>INVESTIMENTO TOTAL REAL</td><td id="calc_invest_ind">R$ 0,00</td><td id="calc_invest_total">R$ 0,00</td></tr>
                 </tbody>
             </table>
 
@@ -660,6 +660,39 @@
         document.getElementById('sub_rep').innerText = fmt.format(tRep);
         document.getElementById('res_folha').innerText = fmt.format(folhaTotal);
         document.getElementById('per_folha').innerText = perFolha + '%';
+
+        // --- Atualização da Tabela Dinâmica de Engenharia Financeira ---
+        const totalColab = q.esc + q.cax + q.rep;
+        const folhaBrutaTotal = (q.esc * bEsc) + (q.cax * bCax) + (q.rep * bRep);
+        const mediaSalarial = totalColab > 0 ? folhaBrutaTotal / totalColab : 0;
+
+        // Distribuição Proporcional (40% de encargos distribuídos)
+        const calcData = {
+            base: mediaSalarial,
+            ferias: mediaSalarial * 0.1111,
+            decimo: mediaSalarial * 0.0833,
+            fgts: mediaSalarial * 0.12,
+            ben: mediaSalarial * 0.0856,
+            total: mediaSalarial * 1.4
+        };
+
+        document.getElementById('calc_total_header').innerText = `Total Real (${totalColab} Colaboradores)`;
+        
+        // Coluna Individual
+        document.getElementById('calc_base_ind').innerText = fmt.format(calcData.base);
+        document.getElementById('calc_ferias_ind').innerText = fmt.format(calcData.ferias);
+        document.getElementById('calc_13_ind').innerText = fmt.format(calcData.decimo);
+        document.getElementById('calc_fgts_ind').innerText = fmt.format(calcData.fgts);
+        document.getElementById('calc_ben_ind').innerText = fmt.format(calcData.ben);
+        document.getElementById('calc_invest_ind').innerText = fmt.format(calcData.total);
+
+        // Coluna Total
+        document.getElementById('calc_base_total').innerText = fmt.format(calcData.base * totalColab);
+        document.getElementById('calc_ferias_total').innerText = fmt.format(calcData.ferias * totalColab);
+        document.getElementById('calc_13_total').innerText = fmt.format(calcData.decimo * totalColab);
+        document.getElementById('calc_fgts_total').innerText = fmt.format(calcData.fgts * totalColab);
+        document.getElementById('calc_ben_total').innerText = fmt.format(calcData.ben * totalColab);
+        document.getElementById('calc_invest_total').innerText = fmt.format(calcData.total * totalColab);
 
         if (fat > 0) {
             let recom = perFolha > 20 ? 
