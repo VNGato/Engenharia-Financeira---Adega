@@ -111,5 +111,21 @@ def save_data():
     db.session.commit()
     return jsonify({"status": "success"})
 
+@app.route('/api/clear_data', methods=['POST'])
+@login_required
+def clear_data():
+    state = DashboardState.query.filter_by(user_id=current_user.id).first()
+    if state:
+        state.fat = 0
+        state.socios = 0
+        state.base_esc = 0
+        state.base_cax = 0
+        state.base_rep = 0
+        state.q_esc = 0
+        state.q_cax = 0
+        state.q_rep = 0
+        db.session.commit()
+    return jsonify({"status": "success"})
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

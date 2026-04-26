@@ -584,6 +584,7 @@
                 <p>Engenharia Fiscal & Controle Financeiro</p>
             </div>
             <div class="nav-actions">
+                <button class="btn-nav" onclick="clearDatabase()">Limpar Dados</button>
                 <button class="btn-nav" onclick="window.print()">Exportar Relatório</button>
                 <a href="/logout" class="btn-nav danger">Sair do Sistema</a>
             </div>
@@ -937,6 +938,15 @@
                 });
                 showSavedStatus();
             } catch (e) { console.error("Erro ao salvar:", e); }
+        }
+
+        async function clearDatabase() {
+            if (confirm("Deseja realmente excluir os dados já cadastrados no banco?")) {
+                try {
+                    await fetch('/api/clear_data', { method: 'POST' });
+                    location.reload(); // Recarrega para limpar tudo visualmente
+                } catch (e) { console.error("Erro ao limpar banco:", e); }
+            }
         }
 
         function showSavingStatus() {
