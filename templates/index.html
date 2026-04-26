@@ -321,6 +321,75 @@
         .analysis-engine strong { color: var(--accent); }
         .analysis-engine em { font-style: normal; color: var(--info); font-size: 0.8rem; opacity: 0.8; }
 
+        /* --- Hidden Knowledge Base (Calculus) --- */
+        .knowledge-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 15px 0;
+            color: var(--accent);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+            transition: var(--transition);
+        }
+
+        .knowledge-trigger:hover { opacity: 0.8; }
+        
+        .eye-icon { font-size: 1.2rem; }
+
+        .hidden-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            opacity: 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-dim);
+        }
+
+        .hidden-details.open {
+            max-height: 2000px;
+            opacity: 1;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
+        }
+
+        .knowledge-box p { margin-bottom: 15px; }
+        .knowledge-box strong { color: var(--text); }
+
+        .calc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .calc-table th {
+            background: var(--glass);
+            color: var(--accent);
+            text-align: left;
+            padding: 12px;
+            text-transform: uppercase;
+        }
+
+        .calc-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .calc-table tr:last-child {
+            background: rgba(0, 255, 136, 0.05);
+            font-weight: 700;
+            color: var(--success);
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -466,6 +535,56 @@
     <div class="glass-card analysis-engine fade-in" id="analise" style="animation-delay: 0.7s;">
         Sincronizando motores de cálculo...
     </div>
+
+    <!-- Base de Cálculo Oculta -->
+    <div class="glass-card knowledge-box fade-in" style="animation-delay: 0.8s; margin-top: 25px;">
+        <div class="knowledge-trigger" onclick="toggleKnowledge()">
+            <span>Visualizar Base de Cálculo & Engenharia Financeira</span>
+            <span class="eye-icon" id="eye_btn">👁️</span>
+        </div>
+        
+        <div class="hidden-details" id="knowledge_content">
+            <p>
+                Para um sistema de escala profissional, não calculamos apenas o salário líquido (o que cai na conta do trabalhador), 
+                mas sim o <strong>Custo de Ocupação</strong>. Na gestão de alta performance, trabalhamos com o custo real do "recurso humano".
+            </p>
+            
+            <p>
+                <strong>1. Linha Lógica:</strong> Utilizei um multiplicador médio de <strong>1,4x</strong> sobre o salário base. 
+                Isso é necessário para cobrir os encargos legais e as provisões obrigatórias que evitam o "débito técnico" financeiro.
+            </p>
+
+            <p>
+                <strong>2. Raciocínio (Decomposição):</strong> Para um custo de R$ 3.500,00 por funcionário, a estrutura é:
+            </p>
+
+            <table class="calc-table">
+                <thead>
+                    <tr>
+                        <th>Item de Custo</th>
+                        <th>Valor Individual</th>
+                        <th>Total (Ex: 10 Func.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Salário Base Médio</td><td>R$ 2.500,00</td><td>R$ 25.000,00</td></tr>
+                    <tr><td>Provisão Férias + 1/3</td><td>R$ 277,00</td><td>R$ 2.770,00</td></tr>
+                    <tr><td>Provisão 13º Salário</td><td>R$ 208,00</td><td>R$ 2.080,00</td></tr>
+                    <tr><td>FGTS + Encargos (40%)</td><td>R$ 300,00</td><td>R$ 3.000,00</td></tr>
+                    <tr><td>Benefícios (VT/VR/Média)</td><td>R$ 215,00</td><td>R$ 2.150,00</td></tr>
+                    <tr><td>TOTAL DO INVESTIMENTO</td><td>R$ 3.500,00</td><td>R$ 35.000,00</td></tr>
+                </tbody>
+            </table>
+
+            <p>
+                <strong>3. Prevenção:</strong> A arquitetura de <strong>65% para a "Operação"</strong> previne o colapso porque destina o valor necessário para a Folha e reserva o restante para o CMV (Estoque) e Custos Fixos (Aluguel/Luz).
+            </p>
+            
+            <p style="font-size: 0.8rem; font-style: italic;">
+                * Se os seus funcionários ganham valores diferentes, o dashboard adapta a "Reserva Ideal" automaticamente com base no multiplicador de Engenharia Financeira de 1.4x.
+            </p>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -597,6 +716,13 @@
         document.getElementById('sync_dot').classList.remove('syncing');
         document.getElementById('sync_text').innerText = "Sincronizado";
         setTimeout(() => { document.getElementById('save_indicator').classList.remove('active'); }, 2000);
+    }
+
+    function toggleKnowledge() {
+        const content = document.getElementById('knowledge_content');
+        const eye = document.getElementById('eye_btn');
+        content.classList.toggle('open');
+        eye.innerText = content.classList.contains('open') ? '🕶️' : '👁️';
     }
     
     window.onload = loadInitialData;
