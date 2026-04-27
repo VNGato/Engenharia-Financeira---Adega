@@ -775,6 +775,7 @@
     <script>
         let q = { esc: 0, cax: 0, rep: 0 };
         let saveTimeout;
+        let isCleaning = false;
         const fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
         function formatCurrency(value) {
@@ -827,6 +828,7 @@
         }
 
         function run(shouldSave = true) {
+            if (isCleaning) return; // Bloqueia cálculos se estiver limpando
             const fat = parseCurrency(document.getElementById('fat_input').value);
             const nSocios = parseInt(document.getElementById('socios_input').value) || 0;
             const bEsc = parseCurrency(document.getElementById('base_esc').value);
@@ -914,7 +916,7 @@
                 document.getElementById('analise').innerText = "Aguardando faturamento...";
             }
 
-            if (shouldSave && !isCleaning) {
+            if (shouldSave) {
                 clearTimeout(saveTimeout);
                 showSavingStatus();
                 saveTimeout = setTimeout(saveToServer, 300); // 300ms para salvar mais rápido
@@ -943,28 +945,40 @@
             } catch (e) { console.error("Erro ao salvar:", e); }
         }
 
+        // Função clearDatabase corrigida
         async function clearDatabase() {
             if (confirm("Deseja realmente excluir os dados já cadastrados no banco?")) {
-                isCleaning = true; // Trava todos os salvamentos
-                clearTimeout(saveTimeout);
+                isCleaning = true; // Trava qualquer tentativa de salvamento imediato
+                clearTimeout(saveTimeout); // Cancela qualquer salvamento pendente
+                
                 try {
-                    await fetch('/api/clear_data', { method: 'POST' });
+                    // Primeiro avisa o servidor para zerar o banco
+                    const response = await fetch('/api/clear_data', { method: 'POST' });
                     
-                    // Limpa logo na tela
-                    document.getElementById('fat_input').value = "R$ 0,00";
-                    document.getElementById('base_esc').value = "R$ 0,00";
-                    document.getElementById('base_cax').value = "R$ 0,00";
-                    document.getElementById('base_rep').value = "R$ 0,00";
-                    document.getElementById('socios_input').value = 0;
-                    q = { esc: 0, cax: 0, rep: 0 };
-                    
-                    // Pequeno delay para garantir que o banco terminou de processar
-                    setTimeout(() => {
-                        window.location.href = window.location.pathname + "?reset=" + new Date().getTime();
-                    }, 500);
+                    if (response.ok) {
+                        // Limpa a interface visualmente
+                        document.getElementById('fat_input').value = "R$ 0,00";
+                        document.getElementById('base_esc').value = "R$ 0,00";
+                        document.getElementById('base_cax').value = "R$ 0,00";
+                        document.getElementById('base_rep').value = "R$ 0,00";
+                        document.getElementById('socios_input').value = 0;
+                        
+                        q = { esc: 0, cax: 0, rep: 0 };
+                        document.getElementById('qtd_esc').innerText = "0";
+                        document.getElementById('qtd_cax').innerText = "0";
+                        document.getElementById('qtd_rep').innerText = "0";
+
+                        showSavedStatus();
+                        
+                        // Recarrega a página para limpar o estado interno do script
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 300);
+                    }
                 } catch (e) {
                     isCleaning = false;
                     console.error("Erro ao limpar banco:", e);
+                    alert("Erro ao limpar os dados.");
                 }
             }
         }
