@@ -924,7 +924,7 @@
         }
 
         async function saveToServer() {
-            if (isCleaning) return; // Aborta qualquer salvamento se estiver limpando
+            if (isCleaning) return; // Bloqueia salvamento se estivermos no meio de uma limpeza
             
             const payload = {
                 fat: parseCurrency(document.getElementById('fat_input').value),
@@ -978,7 +978,7 @@
                 } catch (e) {
                     isCleaning = false;
                     console.error("Erro ao limpar banco:", e);
-                    alert("Erro ao limpar os dados.");
+                    alert("A limpeza falhou. Por favor, verifique sua conexão ou tente recarregar a página.");
                 }
             }
         }
