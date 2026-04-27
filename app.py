@@ -35,6 +35,12 @@ class DashboardState(db.Model):
     q_cax = db.Column(db.Integer, default=0)
     q_rep = db.Column(db.Integer, default=0)
 
+# Importar modelos aqui para garantir que o SQLAlchemy os conheça na criação
+from app import DashboardState, User
+
+with app.app_context():
+    db.create_all()
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
