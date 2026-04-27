@@ -917,7 +917,7 @@
             if (shouldSave && !isCleaning) {
                 clearTimeout(saveTimeout);
                 showSavingStatus();
-                saveTimeout = setTimeout(saveToServer, 1000);
+                saveTimeout = setTimeout(saveToServer, 300); // 300ms para salvar mais rápido
             }
         }
 
