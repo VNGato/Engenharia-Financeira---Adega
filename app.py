@@ -8,7 +8,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'adega-secret-123'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///adega.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {"timeout": 20} # Evita 'Database is locked'
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    "connect_args": {"timeout": 20}
+}
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
