@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+*.pyc
+adega.db
+.DS_Store
+.env

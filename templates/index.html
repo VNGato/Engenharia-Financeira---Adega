@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adega Inteligência - Painel de Controle</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Montserrat:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+    <div id="save_indicator" class="save-status">
+        <div id="sync_dot" class="dot"></div>
+        <span id="sync_text">Dados Sincronizados</span>
+    </div>
+
+    <div class="container">
+        <header class="header-main fade-in">
+            <div class="title-group">
+                <h1>Adega Inteligência</h1>
+                <p>Engenharia Fiscal & Controle Financeiro</p>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-nav" onclick="clearDatabase()">Limpar Dados</button>
+                <button class="btn-nav" onclick="window.print()">Exportar Relatório</button>
+                <a href="/logout" class="btn-nav danger">Sair do Sistema</a>
+            </div>
+        </header>
+
+        <div class="top-bar fade-in" style="animation-delay: 0.1s;">
+            <div class="glass-card input-group">
+                <label>Faturamento Bruto Mensal</label>
+                <input type="text" id="fat_input" value="R$ 0,00" oninput="handleMoneyInput(this)">
+            </div>
+            <div class="glass-card input-group">
+                <label>Nº de Sócios (0 = Individual)</label>
+                <input type="number" id="socios_input" value="0" min="0" oninput="run()">
+            </div>
+        </div>
+
+        <!-- Custos Fixos & Utilidades -->
+        <div class="top-bar fade-in" style="animation-delay: 0.15s; margin-top: -15px;">
+            <div class="glass-card input-group">
+                <label>Água Mensal</label>
+                <input type="text" id="agua_input" value="R$ 0,00" oninput="handleMoneyInput(this)">
+            </div>
+            <div class="glass-card input-group">
+                <label>Energia Elétrica</label>
+                <input type="text" id="energia_input" value="R$ 0,00" oninput="handleMoneyInput(this)">
+            </div>
+            <div class="glass-card input-group">
+                <label>Combustível / Logística</label>
+                <input type="text" id="combustivel_input" value="R$ 0,00" oninput="handleMoneyInput(this)">
+            </div>
+            <div class="glass-card input-group">
+                <label>Aluguel</label>
+                <input type="text" id="aluguel_input" value="R$ 0,00" oninput="handleMoneyInput(this)">
+            </div>
+        </div>
+
+        <div class="grid-pessoal">
+            <!-- Escritório -->
+            <div class="glass-card category-card fade-in" style="animation-delay: 0.2s;">
+                <h3>Gestão & Estratégico(Escritório)</h3>
+                <div class="salary-input-row">
+                    <label>Salário Base (R$)</label>
+                    <input type="text" id="base_esc" value="R$ 0,00" oninput="handleMoneyInput(this)">
+                </div>
+                <div class="spec-row">
+                    <span>Custo Real (+40% encargos)</span>
+                    <strong id="real_esc">R$ 0,00</strong>
+                </div>
+                <div class="counter-tool">
+                    <button onclick="updateQtd('esc', -1)">−</button>
+                    <span id="qtd_esc">0</span>
+                    <button onclick="updateQtd('esc', 1)">+</button>
+                </div>
+                <div class="total-badge">
+                    <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
+                    <strong id="sub_esc" style="color: var(--info);">R$ 0,00</strong>
+                </div>
+            </div>
+
+            <!-- Caixa -->
+            <div class="glass-card category-card fade-in" style="animation-delay: 0.3s;">
+                <h3>Operacional / Caixa</h3>
+                <div class="salary-input-row">
+                    <label>Salário Base (R$)</label>
+                    <input type="text" id="base_cax" value="R$ 0,00" oninput="handleMoneyInput(this)">
+                </div>
+                <div class="spec-row">
+                    <span>Custo Real (+40% encargos)</span>
+                    <strong id="real_cax">R$ 0,00</strong>
+                </div>
+                <div class="counter-tool">
+                    <button onclick="updateQtd('cax', -1)">−</button>
+                    <span id="qtd_cax">0</span>
+                    <button onclick="updateQtd('cax', 1)">+</button>
+                </div>
+                <div class="total-badge">
+                    <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
+                    <strong id="sub_cax" style="color: var(--info);">R$ 0,00</strong>
+                </div>
+            </div>
+
+            <!-- Atendente -->
+            <div class="glass-card category-card fade-in" style="animation-delay: 0.4s;">
+                <h3>Atendente / Repositor</h3>
+                <div class="salary-input-row">
+                    <label>Salário Base (R$)</label>
+                    <input type="text" id="base_rep" value="R$ 0,00" oninput="handleMoneyInput(this)">
+                </div>
+                <div class="spec-row">
+                    <span>Custo Real (+40% encargos)</span>
+                    <strong id="real_rep">R$ 0,00</strong>
+                </div>
+                <div class="counter-tool">
+                    <button onclick="updateQtd('rep', -1)">−</button>
+                    <span id="qtd_rep">0</span>
+                    <button onclick="updateQtd('rep', 1)">+</button>
+                </div>
+                <div class="total-badge">
+                    <span style="font-size: 0.7rem; text-transform: uppercase;">Aporte Total Categoria</span>
+                    <strong id="sub_rep" style="color: var(--info);">R$ 0,00</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-grid">
+            <div class="glass-card card-result blue fade-in" style="animation-delay: 0.5s;">
+                <div class="type-label">Folha de Pagamento Total</div>
+                <div class="main-value" id="res_folha" style="color: var(--info);">R$ 0,00</div>
+                <div class="sub-detail">
+                    Comprometimento: <span class="percent-tag" id="per_folha">0%</span> do faturamento.
+                </div>
+            </div>
+
+            <div class="glass-card card-result green fade-in" style="animation-delay: 0.6s;">
+                <div class="type-label" id="label_lucro">Rendimento Proprietário</div>
+                <div class="main-value" id="res_socio" style="color: var(--success);">R$ 0,00</div>
+                <div class="sub-detail" id="detalhe_lucro">Baseado na margem operacional de 25%.</div>
+            </div>
+        </div>
+
+        <div class="glass-card analysis-engine fade-in" id="analise" style="animation-delay: 0.7s;">
+            Sincronizando motores de cálculo...
+        </div>
+
+        <!-- Base de Cálculo Oculta -->
+        <div class="glass-card knowledge-box fade-in" style="animation-delay: 0.8s; margin-top: 25px;">
+            <div class="knowledge-trigger" onclick="toggleKnowledge()">
+                <span>Visualizar Base de Cálculo & Engenharia Financeira</span>
+                <span class="eye-icon" id="eye_btn">👁️</span>
+            </div>
+
+            <div class="hidden-details" id="knowledge_content">
+                <p>
+                    Para um sistema de escala profissional, não calculamos apenas o salário líquido (o que cai na conta
+                    do trabalhador),
+                    mas sim o <strong>Custo de Ocupação</strong>. Na gestão de alta performance, trabalhamos com o custo
+                    real do "recurso humano".
+                </p>
+
+                <p>
+                    <strong>1. Linha Lógica:</strong> Utilizei um multiplicador médio de <strong>1,4x</strong> sobre o
+                    salário base.
+                    Isso é necessário para cobrir os encargos legais e as provisões obrigatórias que evitam o "débito
+                    técnico" financeiro.
+                </p>
+
+                <p>
+                    <strong>2. Raciocínio (Decomposição):</strong> Para um custo de R$ 3.500,00 por funcionário, a
+                    estrutura é:
+                </p>
+
+                <table class="calc-table">
+                    <thead>
+                        <tr>
+                            <th>Item de Custo</th>
+                            <th>Escritório</th>
+                            <th>Caixa</th>
+                            <th>Repositor</th>
+                            <th id="calc_total_header">Total Geral (0 Colab.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Salário Base Bruto</td>
+                            <td id="calc_base_esc">R$ 0,00</td>
+                            <td id="calc_base_cax">R$ 0,00</td>
+                            <td id="calc_base_rep">R$ 0,00</td>
+                            <td id="calc_base_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Provisão Férias + 1/3 (11.11%)</td>
+                            <td id="calc_ferias_esc">R$ 0,00</td>
+                            <td id="calc_ferias_cax">R$ 0,00</td>
+                            <td id="calc_ferias_rep">R$ 0,00</td>
+                            <td id="calc_ferias_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Provisão 13º Salário (8.33%)</td>
+                            <td id="calc_13_esc">R$ 0,00</td>
+                            <td id="calc_13_cax">R$ 0,00</td>
+                            <td id="calc_13_rep">R$ 0,00</td>
+                            <td id="calc_13_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>FGTS + Encargos Legais (12%)</td>
+                            <td id="calc_fgts_esc">R$ 0,00</td>
+                            <td id="calc_fgts_cax">R$ 0,00</td>
+                            <td id="calc_fgts_rep">R$ 0,00</td>
+                            <td id="calc_fgts_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Benefícios / Auxílios (8.56%)</td>
+                            <td id="calc_ben_esc">R$ 0,00</td>
+                            <td id="calc_ben_cax">R$ 0,00</td>
+                            <td id="calc_ben_rep">R$ 0,00</td>
+                            <td id="calc_ben_total">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td>INVESTIMENTO TOTAL REAL</td>
+                            <td id="calc_invest_esc">R$ 0,00</td>
+                            <td id="calc_invest_cax">R$ 0,00</td>
+                            <td id="calc_invest_rep">R$ 0,00</td>
+                            <td id="calc_invest_total">R$ 0,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>
+                    <strong>3. Prevenção:</strong> A arquitetura de <strong>65% para a "Operação"</strong> previne o
+                    colapso porque destina o valor necessário para a Folha e reserva o restante para o CMV (Estoque) e
+                    Custos Fixos (Aluguel/Luz).
+                </p>
+
+                <p style="font-size: 0.8rem; font-style: italic;">
+                    * Se os seus funcionários ganham valores diferentes, o dashboard adapta a "Reserva Ideal"
+                    automaticamente com base no multiplicador de Engenharia Financeira de 1.4x.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+
+</html>
