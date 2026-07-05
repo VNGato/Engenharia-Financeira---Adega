@@ -24,6 +24,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+    recovery_pin = db.Column(db.String(120), nullable=False)
 
 class DashboardState(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,7 +66,16 @@ def login():
         password = request.form.get('password')
         
         if not user_exists:
-            new_user = User(username=username, password=generate_password_hash(password))
+            pin = request.form.get('pin')
+            if not pin or len(pin) != 6 or not pin.isdigit():
+                flash('O PIN de recuperação deve ter exatamente 6 dígitos numéricos.')
+                return render_template('login.html', user_exists=user_exists)
+            
+            new_user = User(
+                username=username,
+                password=generate_password_hash(password),
+                recovery_pin=generate_password_hash(pin)
+            )
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
@@ -79,6 +89,33 @@ def login():
             flash('Usuário ou senha inválidos')
             
     return render_template('login.html', user_exists=user_exists)
+
+@app.route('/reset-password', methods=['GET', 'POST'])
+def reset_password():
+    user_exists = User.query.first() is not None
+    if not user_exists:
+        return redirect(url_for('login'))
+        
+    if request.method == 'POST':
+        username = request.form.get('username')
+        pin = request.form.get('pin')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+        
+        if new_password != confirm_password:
+            flash('As senhas não coincidem.')
+            return render_template('reset_password.html')
+            
+        user = User.query.filter_by(username=username).first()
+        if user and check_password_hash(user.recovery_pin, pin):
+            user.password = generate_password_hash(new_password)
+            db.session.commit()
+            flash('Senha alterada com sucesso! Faça login com a nova senha.')
+            return redirect(url_for('login'))
+        else:
+            flash('Usuário ou PIN de recuperação inválidos.')
+            
+    return render_template('reset_password.html')
 
 @app.route('/logout')
 @login_required
